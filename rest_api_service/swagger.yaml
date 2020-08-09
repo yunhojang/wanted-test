@@ -1,0 +1,267 @@
+openapi: 3.0.1
+info:
+  title: REST APIs
+  description: >-
+    REST API Developement for Wanted Joining
+  version: "0.1"
+servers:
+  - url: http://localhost:3000/v1/
+paths:
+  /company-name/autocomplete:
+    post:
+      tags:
+      - Company
+      summary: 회사명의 auto completing을 요청
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+              - companyName
+              properties:
+                companyName:
+                  type: string
+                  description:
+                    회사명의 전체 또는 일부를 기입
+                startOffset:
+                  type: integer
+                limit:
+                  type: integer
+                orderBy:
+                  type: string
+                  default: 'desc'
+                  enum: ['desc', 'asc']
+      responses:
+        "200":
+          description: Success
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - result
+                properties:
+                  result:
+                    required:
+                    - totalCount
+                    - gettedCount
+                    - results
+                    properties:
+                      totalCount:
+                          type: number
+                      gettedCount:
+                          type: number
+                      results:
+                        type: array
+                        items:
+                          type: string
+        "400":
+          description: Bad Request
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "500":
+          description: Internal Error
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /company/search:
+    post:
+      tags:
+      - Company
+      summary: 회사 정보를 검색
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+              - tagName
+              properties:
+                tagName:
+                  type: string
+                  description:
+                    태그명을 기입
+                tagCountry:
+                  type: string
+                  default: 'all'
+                  enum: ['all', 'ko', 'ja']
+      responses:
+        "200":
+          description: Success
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - result
+                properties:
+                  result:
+                    required:
+                    - totalCount
+                    - gettedCount
+                    - results
+                    properties:
+                      totalCount:
+                          type: number
+                      gettedCount:
+                          type: number
+                      results:
+                        type: array
+                        items:
+                          type: string
+        "400":
+          description: Bad Request
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "500":
+          description: Internal Error
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /company-tag/add:
+    post:
+      tags:
+      - Company Tag
+      summary: 회사 태그 정보를 추가
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+              - companyName
+              - tagConuntry
+              - tag
+              properties:
+                companyName:
+                  type: string
+                  description:
+                    회사명을 기입
+                tagCountry:
+                  type: string
+                tag:
+                  type: string
+      responses:
+        "201":
+          description: Ok
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+        "400":
+          description: Bad Request
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "500":
+          description: Internal Error
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /company-tag/remove:
+    post:
+      tags:
+      - Company Tag
+      summary: 회사 태그 정보를 삭제
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+              - companyName
+              - tagConuntry
+              - tag
+              properties:
+                companyName:
+                  type: string
+                  description:
+                    회사명을 기입
+                tagCountry:
+                  type: string
+                tag:
+                  type: string
+      responses:
+        "201":
+          description: Ok
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+        "400":
+          description: Bad Request
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "500":
+          description: Internal Error
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+      - errorType
+      - errorMessage
+      properties:
+        errorType:
+          type: string
+          description:
+            에러의 타입으로, 정의한 에러 타입에는 BadRequest, NotFound, InternalError 등이 있다.
+        errorMessage:
+          type: string
+          description:
+            에러에 대한 설명이다.

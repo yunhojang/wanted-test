@@ -1,0 +1,16 @@
+version: "3.4"
+services:
+  rest_api_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 3000:3000
+    network_mode: "host"
+    environment:
+      APP_ENV: local
+
+# networks:
+#   wanted_test:
+#     external: true

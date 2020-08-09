@@ -1,0 +1,180 @@
+(venv) wanted_test@instance-1:~$ cd wanted-test/
+(venv) wanted_test@instance-1:~/wanted-test$ make -f Makefile-local.mk clean
+make[1]: Entering directory '/home/wanted_test/wanted-test/rest_api_service'
++ dc-clean
+make[1]: Leaving directory '/home/wanted_test/wanted-test/rest_api_service'
+/home/wanted_test/wanted-test
+(venv) wanted_test@instance-1:~/wanted-test$ make -f Makefile-local.mk service-test
+make[1]: Entering directory '/home/wanted_test/wanted-test/rest_api_service'
++ dc-clean
+make[1]: Leaving directory '/home/wanted_test/wanted-test/rest_api_service'
+/home/wanted_test/wanted-test
+c0d84ae10a443f675a93a51773c6e47401175de35a57d2573a95b02ef78c6758
+Pulling mongo (mongo:4.2.3)...
+4.2.3: Pulling from library/mongo
+5bed26d33875: Pull complete
+f11b29a9c730: Pull complete
+930bda195c84: Pull complete
+78bf9a5ad49e: Pull complete
+3d7fb3809884: Pull complete
+a7237292ff8a: Pull complete
+c936e28b5159: Pull complete
+3fb56b127f30: Pull complete
+c54a0478af29: Pull complete
+f535558aec6d: Pull complete
+3c80d404ff4d: Pull complete
+6836853ff981: Pull complete
+2a86198cd55d: Pull complete
+Digest: sha256:58b25d51baa11a85b6aedf7c4e05710d12a27ddc2883e2692e7d58527d98bd73
+Status: Downloaded newer image for mongo:4.2.3
+Creating infra_mongo_1 ... done
+make[1]: Entering directory '/home/wanted_test/wanted-test/rest_api_service'
++ dc-build
+Building rest_api_service
+Step 1/26 : FROM python:3.7-slim-buster
+ ---> f6d88f1a6438
+Step 2/26 : ARG BUILD_ENV="local"
+ ---> Using cache
+ ---> 1eba95f02b11
+Step 3/26 : ENV APP_ENV=${BUILD_ENV}
+ ---> Using cache
+ ---> b4a36dfc9d48
+Step 4/26 : ENV LANG=C.UTF-8
+ ---> Using cache
+ ---> 6b4269d2e79a
+Step 5/26 : ENV LC_ALL C.UTF-8
+ ---> Using cache
+ ---> d744fef74239
+Step 6/26 : ENV PYTHONFAULTHANDLER 1
+ ---> Using cache
+ ---> 0db8a84e9272
+Step 7/26 : ENV PYTHONHASHSEED random
+ ---> Using cache
+ ---> 9fa121e45b63
+Step 8/26 : ENV PIP_DISABLE_PIP_VERSION_CHECK on
+ ---> Using cache
+ ---> 51ae5c6338f4
+Step 9/26 : ENV PIP_NO_CACHE_DIR off
+ ---> Using cache
+ ---> 55c9924eada8
+Step 10/26 : ENV PIP_DEFAULT_TIMEOUT 100
+ ---> Using cache
+ ---> f4f8a370a4d1
+Step 11/26 : ENV POETRY_VERSION 1.0.5
+ ---> Using cache
+ ---> 487ea23415a2
+Step 12/26 : RUN echo "BUILD_ENV: ${BUILD_ENV}"
+ ---> Using cache
+ ---> 7ecd9e1bf875
+Step 13/26 : RUN apt-get update -y &&     DEBIAN_FRONTEND=noninteractive apt-get install nginx -y
+ ---> Using cache
+ ---> d5dfae78ee39
+Step 14/26 : RUN pip install "poetry==${POETRY_VERSION}"
+ ---> Using cache
+ ---> fc47db772861
+Step 15/26 : WORKDIR /app
+ ---> Using cache
+ ---> 205c595a918c
+Step 16/26 : COPY poetry.lock pyproject.toml /app/
+ ---> Using cache
+ ---> 927948874821
+Step 17/26 : RUN rm /etc/nginx/sites-available/default
+ ---> Using cache
+ ---> c0fe1636e79e
+Step 18/26 : RUN rm /etc/nginx/sites-enabled/default
+ ---> Using cache
+ ---> b94fb3be3648
+Step 19/26 : COPY rest_api_service/nginx/default.conf /etc/nginx/sites-available/default
+ ---> Using cache
+ ---> 88a54328b537
+Step 20/26 : RUN ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+ ---> Using cache
+ ---> 17047349ae9d
+Step 21/26 : RUN poetry config virtualenvs.create false         && poetry install $(test "${BUILD_ENV}" = prod && echo "--no-dev") --no-interaction --no-ansi
+ ---> Using cache
+ ---> b4c0a8f102a3
+Step 22/26 : COPY . /app
+ ---> e5e9c653da7c
+Step 23/26 : RUN apt-get clean
+ ---> Running in 1a92e6299a0e
+Removing intermediate container 1a92e6299a0e
+ ---> 4ba41ef629bf
+Step 24/26 : RUN rm -rf /var/lib/apt/lists/*
+ ---> Running in 0c5a8f9af0c4
+Removing intermediate container 0c5a8f9af0c4
+ ---> 4d73a28d9217
+Step 25/26 : ENTRYPOINT ["python"]
+ ---> Running in ff051867d867
+Removing intermediate container ff051867d867
+ ---> 746af84e38c2
+Step 26/26 : CMD [ "-m", "rest_api_service.main"]
+ ---> Running in b765fd9a96b2
+Removing intermediate container b765fd9a96b2
+ ---> d3b502164fbc
+
+Successfully built d3b502164fbc
+Successfully tagged rest_api_service_rest_api_service:latest
++ dc-service
+Creating rest_api_service_rest_api_service_1 ... done
+make[1]: Leaving directory '/home/wanted_test/wanted-test/rest_api_service'
+/home/wanted_test/wanted-test
+/home/wanted_test/wanted-test
+make[1]: Entering directory '/home/wanted_test/wanted-test/postman'
++ test
+------------------------------------------------
+case_01_rest_api_test.sh
+------------------------------------------------
+newman
+
+WantedRestApiTest
+
+❏ Test /v1/company/autocomplete
+↳ __test response when request body is valid
+  POST http://localhost:3000/v1/company-name/autocomplete [200 OK, 211B, 158ms]
+
+↳ __test response when request body is invalid
+  POST http://localhost:3000/v1/company-name/autocomplete [400 BAD REQUEST, 259B, 13ms]
+  ✓  Status code is 400
+  ✓  Response time is less than 200ms
+  ✓  Body matches string
+  ✓  Reponse Body Schema is valid
+
+❏ Test /v1/company/search
+↳ __test response when request body is valid
+  POST http://localhost:3000/v1/company/search [200 OK, 211B, 19ms]
+
+↳ __test response when request body is invalid Copy
+  POST http://localhost:3000/v1/company/search [400 BAD REQUEST, 259B, 7ms]
+  ✓  Status code is 400
+  ✓  Response time is less than 200ms
+  ✓  Body matches string
+  ✓  Reponse Body Schema is valid
+
+→ Test /v1/ping
+  GET http://localhost:3000/v1/ping [200 OK, 165B, 7ms]
+  ✓  Status code is 200
+  ✓  Response time is less than 200ms
+  ✓  Body matches string
+
+┌─────────────────────────┬───────────────────┬──────────────────┐
+│                         │          executed │           failed │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│              iterations │                 1 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│                requests │                 5 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│            test-scripts │                 5 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│      prerequest-scripts │                 0 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│              assertions │                11 │                0 │
+├─────────────────────────┴───────────────────┴──────────────────┤
+│ total run duration: 399ms                                      │
+├────────────────────────────────────────────────────────────────┤
+│ total data received: 310B (approx)                             │
+├────────────────────────────────────────────────────────────────┤
+│ average response time: 40ms [min: 7ms, max: 158ms, s.d.: 58ms] │
+└────────────────────────────────────────────────────────────────┘
+make[1]: Leaving directory '/home/wanted_test/wanted-test/postman'
+/home/wanted_test/wanted-test
+(venv) wanted_test@instance-1:~/wanted-test$

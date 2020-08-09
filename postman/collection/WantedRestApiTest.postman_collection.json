@@ -1,0 +1,279 @@
+{
+	"info": {
+		"_postman_id": "d032540a-4605-4682-99bb-3c7ce1b017f3",
+		"name": "WantedRestApiTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Test /v1/company/autocomplete",
+			"item": [
+				{
+					"name": "__test response when request body is valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8b8ad103-af57-4118-80b0-0c494fdec1fd",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"companyName\": \"원\",\n\t\"limit\": 10\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/company-name/autocomplete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"company-name",
+								"autocomplete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "__test response when request body is invalid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3f646755-ab9f-4987-971f-5a04409643e5",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"var schema = {",
+									"    'type': 'object',",
+									"    'required': [",
+									"        'errorMessage',",
+									"        'errorType'",
+									"    ],",
+									"    'properties': {",
+									"        'errorMessage': {",
+									"            'type': 'string'",
+									"        },",
+									"        'errorType': {",
+									"            'type': 'string'",
+									"        }",
+									"    }",
+									"};",
+									"pm.test('Reponse Body Schema is valid', function() {",
+									"    var res = pm.response",
+									"    pm.expect(tv4.validate(res.json(), schema)).to.be.true;",
+									"    pm.test(\"Body matches string\", function () {",
+									"        pm.expect(res.text()).to.include(\"BadRequest\");",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/company-name/autocomplete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"company-name",
+								"autocomplete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test /v1/company/search",
+			"item": [
+				{
+					"name": "__test response when request body is valid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3f646755-ab9f-4987-971f-5a04409643e5",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"tagName\": \"태그_4\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/company/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"company",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "__test response when request body is invalid Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3f646755-ab9f-4987-971f-5a04409643e5",
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"var schema = {",
+									"    'type': 'object',",
+									"    'required': [",
+									"        'errorMessage',",
+									"        'errorType'",
+									"    ],",
+									"    'properties': {",
+									"        'errorMessage': {",
+									"            'type': 'string'",
+									"        },",
+									"        'errorType': {",
+									"            'type': 'string'",
+									"        }",
+									"    }",
+									"};",
+									"pm.test('Reponse Body Schema is valid', function() {",
+									"    var res = pm.response",
+									"    pm.expect(tv4.validate(res.json(), schema)).to.be.true;",
+									"    pm.test(\"Body matches string\", function () {",
+									"        pm.expect(res.text()).to.include(\"BadRequest\");",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/company/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"company",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test /v1/ping",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "12abf949-0d1d-4e84-9583-f9703162b498",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"pong\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3000/v1/ping",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"v1",
+						"ping"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

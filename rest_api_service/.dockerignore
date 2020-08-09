@@ -1,0 +1,10 @@
+# .dockerignore
+# .flake8
+# .gitignore
+# .pytest_cache/
+# .vscode/
+.*
+Makefile*
+*.yaml
+*.csv
+Dockerfile
